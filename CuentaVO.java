@@ -1,21 +1,17 @@
 import java.util.Date;
 /**
- * tabla users
+ * Fichero: CuentaVO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
-public class cuentaVO {
+public class CuentaVO {
     private int idCuenta;
     private String correo;
     private String apodo;
     private String contrasegna;
     
-    /**
-    * Constructor
-    * @param userName
-    * @param password
-    */
-    public cuentaVO(int idCuenta, String correo, String apodo, String contrasegna) {
+    //Constructor
+    public CuentaVO(int idCuenta, String correo, String apodo, String contrasegna) {
         this.idCuenta = idCuenta;
         this.correo = correo;
         this.apodo = apodo;
