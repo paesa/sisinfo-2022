@@ -5,27 +5,27 @@ import java.sql.SQLException;
 import es.unizar.sisinf.grp1.db.ConnectionManager;
 
 /**
- * tabla users
+ * Fichero: CuentaDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
 
 
-public class cuentaDAO {
-    List<cuentaVO> cuentas;
-    public cuentaDAO(){
-        cuentas=new ArrayList<cuentasVO>();
+public class CuentaDAO {
+    List<CuentaVO> cuentas;
+    public CuentaDAO(){
+        cuentas=new ArrayList<CuentasVO>();
     }
-    public void anyadirCuenta(cuentaVO c){
+    public void anyadirCuenta(CuentaVO c){
         cuentas.add(c);
     }
-    public void eliminarCuenta(cuentaVO c){
+    public void eliminarCuenta(CuentaVO c){
         cuentas.remove(p.obtenerIdCuenta);
     }
-    public cuentaVO obtenerCuenta(int idCuenta){
+    public CuentaVO obtenerCuenta(int idCuenta){
         return(cuentas.get(idCuenta));
     }
-    public List<cuentaVO> obtenerCuentas(){
+    public List<CuentaVO> obtenerCuentas(){
         return(cuentas);
     }
 }
