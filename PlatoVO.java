@@ -65,13 +65,13 @@ public class PlatoVO {
     public boolean esVegano() {
         return vegano;
     }
-    public void establecerGluten(boolean sinGluten) {
+    public void establecerSinGluten(boolean sinGluten) {
         this.sinGluten = sinGluten;
     }
     public boolean llevaGluten() {
         return !sinGluten;
     }
-    public void establecerLactosa(boolean sinLactosa) {
+    public void establecerSinLactosa(boolean sinLactosa) {
         this.sinLactosa = sinLactosa;
     }
     public boolean llevaLactosa() {
