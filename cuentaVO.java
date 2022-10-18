@@ -5,19 +5,28 @@ import java.util.Date;
  *
  */
 public class cuentaVO {
+    private int idCuenta;
     private String correo;
     private String apodo;
     private String contrasegna;
-    private Date lastLogin;
+    
     /**
     * Constructor
     * @param userName
     * @param password
     */
-    public cuentaVO(String correo, String apodo, String contrasegna) {
+    public cuentaVO(int idCuenta, String correo, String apodo, String contrasegna) {
+        this.idCuenta = idCuenta;
         this.correo = correo;
         this.apodo = apodo;
         this.contrasegna = contrasegna;
+    }
+    
+    public int obtenerIdCuenta() {
+        return idCuenta;
+    }
+    public void establecerIdCuenta(int idCuenta) {
+        this.idCuenta = idCuenta;
     }
     public String obtenerCorreo() {
         return correo;
@@ -36,12 +45,5 @@ public class cuentaVO {
     }
     public void establecerContrasegna(String contrasegna) {
         this.contrasegna = contrasegna;
-    }
-
-    public Date getLastLogin() {
-        return lastLogin;
-    }
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
     }
 }
