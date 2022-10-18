@@ -13,9 +13,8 @@ import es.unizar.sisinf.grp1.db.ConnectionManager;
 
 public class PlatoDAO {
     List<PlatoVO> platos;
-    private static String countByUserName = "SELECT count(*) cuenta FROM users WHERE username = ?";
-    private static String findByUserName = "SELECT * FROM users WHERE username = ?";
-    private static String updateDate = "UPDATE users set last_login = current_timestamp where username = ?";
+    
+    //Constructor
     public PlatoDAO(){
         platos=new ArrayList<PlatoVO>();
     }
