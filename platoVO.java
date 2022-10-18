@@ -4,10 +4,15 @@ import java.util.Date;
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
+
+public enum TipoPlato {Entrante, Principal, Postre, Bebida}
+
 public class platoVO {
+    private int idPlato;
     private String nombre;
     private float precio;
     private String descripcion;
+    private TipoPlato tipoPlato;
     private boolean vegano;
     private boolean sinGluten;
     private boolean sinLactosa;
@@ -17,13 +22,22 @@ public class platoVO {
     * @param userName
     * @param password
     */
-    public platoVO(String nombre, float precio, String descripcion, boolean vegano, boolean sinGluten, boolean sinLactosa) {
+    public platoVO(int idPlato, String nombre, float precio, String descripcion, TipoPlato tipoPlato, boolean vegano, boolean sinGluten, boolean sinLactosa) {
+        this.idPlato = idPlato;
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
+        this.tipoPlato = tipoPlato;
         this.vegano = vegano;
         this.sinGluten = sinGluten;
         this.sinLactosa = sinLactosa;
+    }
+    
+    public int obtenerIdPlato() {
+        return idPlato;
+    }
+    public void establecerIdPlato(int idPlato) {
+        this.idPlato = idPlato;
     }
     public String obtenerNombre() {
         return nombre;
@@ -42,6 +56,12 @@ public class platoVO {
     }
     public void establecerDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+     public TipoPlato obtenerTipoPlato() {
+        return tipoPlato;
+    }
+    public void establecerTipoPlato(TipoPlato tipoPlato) {
+        this.tipoPlato = tipoPlato;
     }
     public void establecerVegano(boolean vegano) {
         this.vegano = vegano;
