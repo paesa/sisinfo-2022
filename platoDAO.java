@@ -28,4 +28,7 @@ public class platoDAO {
     public platoVO obtenerPlato(int idPlato){
         return(platos.get(idPlato));
     }
+    public List<platoVO> obtenerPlatos(){
+        return(platos);
+    }
 }
