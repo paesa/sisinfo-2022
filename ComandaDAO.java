@@ -9,21 +9,21 @@ import java.sql.SQLException;
  */
 
 
-public class comandaDAO {
-    List<comandaVO> comandas;
-    public platoDAO(){
-        comandas=new ArrayList<comandaVO>();
+public class ComandaDAO {
+    List<ComandaVO> comandas;
+    public PlatoDAO(){
+        comandas=new ArrayList<ComandaVO>();
     }
-    public void anyadirComanda(comandaVO c){
+    public void anyadirComanda(ComandaVO c){
         comandas.add(c);
     }
-    public void eliminarComanda(comandaVO c){
+    public void eliminarComanda(ComandaVO c){
         comandas.remove(p.obtenerIdComanda);
     }
-    public comandaVO obtenerComanda(int idComanda){
+    public ComandaVO obtenerComanda(int idComanda){
         return(comandas.get(idComanda));
     }
-    public List<comandaVO> obtenerComandas(){
+    public List<ComandaVO> obtenerComandas(){
         return(comandas);
     }
 }
