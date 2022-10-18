@@ -5,7 +5,7 @@ import java.util.Date;
  *
  */
 
-public enum TipoCuenta {Cliente, Cocinero, Sala, Administrador}
+public enum TipoCuenta {Cliente, Cocinero, Sala, Admin}
 
 public class CuentaVO {
     private int idCuenta;
