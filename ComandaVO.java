@@ -14,7 +14,7 @@ public class comandaVO {
     private Estado estado;
     
     //Constructor
-    public comandaVO(int idComanda, Date fecha, String comentario, Estado estado) {
+    public ComandaVO(int idComanda, Date fecha, String comentario, Estado estado) {
         this.idComanda = idComanda;
         this.fecha = fecha;
         this.comentario = comentario;
