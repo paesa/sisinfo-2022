@@ -11,7 +11,9 @@ import java.sql.SQLException;
 
 public class ComandaDAO {
     List<ComandaVO> comandas;
-    public PlatoDAO(){
+    
+    //Constructor
+    public ComandaDAO(){
         comandas=new ArrayList<ComandaVO>();
     }
     public void anyadirComanda(ComandaVO c){
