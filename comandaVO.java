@@ -4,27 +4,30 @@ import java.util.Date;
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
+
+public enum Estado {Creada, Preparando, Recoger, Entregado}
+
 public class comandaVO {
-    private int numComanda;
+    private int idComanda;
     private Date fecha;
     private String comentario;
-    private String estado;
+    private Estado estado;
     /**
     * Constructor
     * @param userName
     * @param password
     */
-    public comandaVO(int numComanda, Date fecha, String comentario, String estado) {
-        this.numComanda = numComanda;
+    public comandaVO(int idComanda, Date fecha, String comentario, Estado estado) {
+        this.idComanda = idComanda;
         this.fecha = fecha;
         this.comentario = comentario;
         this.estado = estado;
     }
-    public int obtenerNumComanda() {
-        return numComanda;
+    public int obtenerIdComanda() {
+        return idComanda;
     }
-    public void establecerNumComanda(int numComanda) {
-        this.numComanda = numComanda;
+    public void establecerIdComanda(int idComanda) {
+        this.idComanda = idComanda;
     }
     public Date obtenerFecha() {
         return fecha;
@@ -38,10 +41,10 @@ public class comandaVO {
     public void establecerComentario(String comentario) {
         this.comentario = comentario;
     }
-    public String obtenerEstado() {
+    public Estado obtenerEstado() {
         return estado;
     }
-    public void establecerEstado(String estado) {
+    public void establecerEstado(Estado estado) {
         this.estado = estado;
     }
 }
