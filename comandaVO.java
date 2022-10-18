@@ -12,11 +12,8 @@ public class comandaVO {
     private Date fecha;
     private String comentario;
     private Estado estado;
-    /**
-    * Constructor
-    * @param userName
-    * @param password
-    */
+    
+    //Constructor
     public comandaVO(int idComanda, Date fecha, String comentario, Estado estado) {
         this.idComanda = idComanda;
         this.fecha = fecha;
