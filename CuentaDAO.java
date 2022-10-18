@@ -20,7 +20,7 @@ public class CuentaDAO {
         cuentas.add(c);
     }
     public void eliminarCuenta(CuentaVO c){
-        cuentas.remove(p.obtenerIdCuenta);
+        cuentas.remove(c.obtenerIdCuenta);
     }
     public CuentaVO obtenerCuenta(int idCuenta){
         return(cuentas.get(idCuenta));
