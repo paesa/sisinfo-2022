@@ -23,4 +23,7 @@ public class comandaDAO {
     public comandaVO obtenerComanda(int idComanda){
         return(comandas.get(idComanda));
     }
+    public List<comandaVO> obtenerComandas(){
+        return(comandas);
+    }
 }
