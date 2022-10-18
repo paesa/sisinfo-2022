@@ -1,6 +1,6 @@
 import java.util.Date;
 /**
- * tabla users
+ * Fichero: comandaVO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
