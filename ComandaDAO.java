@@ -3,7 +3,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
- * tabla users
+ * Fichero: ComandaDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
