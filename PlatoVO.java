@@ -7,7 +7,7 @@ import java.util.Date;
 
 public enum TipoPlato {Entrante, Principal, Postre, Bebida}
 
-public class platoVO {
+public class PlatoVO {
     private int idPlato;
     private String nombre;
     private float precio;
@@ -18,7 +18,7 @@ public class platoVO {
     private boolean sinLactosa;
 
     //Constructor
-    public platoVO(int idPlato, String nombre, float precio, String descripcion, TipoPlato tipoPlato, boolean vegano, boolean sinGluten, boolean sinLactosa) {
+    public PlatoVO(int idPlato, String nombre, float precio, String descripcion, TipoPlato tipoPlato, boolean vegano, boolean sinGluten, boolean sinLactosa) {
         this.idPlato = idPlato;
         this.nombre = nombre;
         this.precio = precio;
