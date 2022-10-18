@@ -4,11 +4,15 @@ import java.util.Date;
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
+
+public enum TipoCuenta {Cliente, Cocinero, Sala, Administrador}
+
 public class CuentaVO {
     private int idCuenta;
     private String correo;
     private String apodo;
     private String contrasegna;
+    private TipoCuenta tipoCuenta;
     
     //Constructor
     public CuentaVO(int idCuenta, String correo, String apodo, String contrasegna) {
@@ -41,5 +45,11 @@ public class CuentaVO {
     }
     public void establecerContrasegna(String contrasegna) {
         this.contrasegna = contrasegna;
+    }
+    public TipoCuenta obtenerTipoCuenta() {
+        return tipoCuenta;
+    }
+    public void establecerTipoCuenta(TipoCuenta tipoCuenta) {
+        this.tipoCuenta = tipoCuenta;
     }
 }
