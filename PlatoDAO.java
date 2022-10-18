@@ -11,24 +11,24 @@ import es.unizar.sisinf.grp1.db.ConnectionManager;
  */
 
 
-public class platoDAO {
-    List<platoVO> platos;
+public class PlatoDAO {
+    List<PlatoVO> platos;
     private static String countByUserName = "SELECT count(*) cuenta FROM users WHERE username = ?";
     private static String findByUserName = "SELECT * FROM users WHERE username = ?";
     private static String updateDate = "UPDATE users set last_login = current_timestamp where username = ?";
-    public platoDAO(){
-        platos=new ArrayList<platoVO>();
+    public PlatoDAO(){
+        platos=new ArrayList<PlatoVO>();
     }
-    public void anyadirPlato(platoVO p){
+    public void anyadirPlato(PlatoVO p){
         platos.add(p);
     }
-    public void eliminarPlato(platoVO p){
+    public void eliminarPlato(PlatoVO p){
         platos.remove(p.obtenerIdPlato);
     }
-    public platoVO obtenerPlato(int idPlato){
+    public PlatoVO obtenerPlato(int idPlato){
         return(platos.get(idPlato));
     }
-    public List<platoVO> obtenerPlatos(){
+    public List<PlatoVO> obtenerPlatos(){
         return(platos);
     }
 }
