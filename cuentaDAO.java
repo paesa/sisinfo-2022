@@ -25,4 +25,7 @@ public class cuentaDAO {
     public cuentaVO obtenerCuenta(int idCuenta){
         return(cuentas.get(idCuenta));
     }
+    public List<cuentaVO> obtenerCuentas(){
+        return(cuentas);
+    }
 }
