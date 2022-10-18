@@ -20,7 +20,7 @@ public class ComandaDAO {
         comandas.add(c);
     }
     public void eliminarComanda(ComandaVO c){
-        comandas.remove(p.obtenerIdComanda);
+        comandas.remove(c.obtenerIdComanda);
     }
     public ComandaVO obtenerComanda(int idComanda){
         return(comandas.get(idComanda));
