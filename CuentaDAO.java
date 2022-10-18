@@ -13,6 +13,8 @@ import es.unizar.sisinf.grp1.db.ConnectionManager;
 
 public class CuentaDAO {
     List<CuentaVO> cuentas;
+    
+    //Constructor
     public CuentaDAO(){
         cuentas=new ArrayList<CuentasVO>();
     }
