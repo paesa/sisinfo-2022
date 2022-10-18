@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import es.unizar.sisinf.grp1.db.ConnectionManager;
 
 /**
- * tabla users
+ * Fichero: PlatoDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
