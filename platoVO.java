@@ -1,6 +1,6 @@
 import java.util.Date;
 /**
- * tabla users
+ * Fichero: PlatoVO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
@@ -17,11 +17,7 @@ public class platoVO {
     private boolean sinGluten;
     private boolean sinLactosa;
 
-    /**
-    * Constructor
-    * @param userName
-    * @param password
-    */
+    //Constructor
     public platoVO(int idPlato, String nombre, float precio, String descripcion, TipoPlato tipoPlato, boolean vegano, boolean sinGluten, boolean sinLactosa) {
         this.idPlato = idPlato;
         this.nombre = nombre;
