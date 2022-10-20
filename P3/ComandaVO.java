@@ -5,8 +5,6 @@ import java.util.Date;
  *
  */
 
-public enum Estado {Creada, Preparando, Recoger, Entregado}
-
 public class ComandaVO {
     private int idComanda;
     private Date fecha;

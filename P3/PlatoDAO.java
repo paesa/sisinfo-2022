@@ -1,8 +1,5 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import es.unizar.sisinf.grp1.db.ConnectionManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fichero: PlatoDAO.java
@@ -22,7 +19,7 @@ public class PlatoDAO {
         platos.add(p);
     }
     public void eliminarPlato(PlatoVO p){
-        platos.remove(p.obtenerIdPlato);
+        platos.remove(p.obtenerIdPlato());
     }
     public PlatoVO obtenerPlato(int idPlato){
         return(platos.get(idPlato));

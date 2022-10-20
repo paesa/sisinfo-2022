@@ -1,11 +1,8 @@
-import java.util.Date;
 /**
  * Fichero: CuentaVO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
-
-public enum TipoCuenta {Cliente, Cocinero, Sala, Admin}
 
 public class CuentaVO {
     private int idCuenta;
