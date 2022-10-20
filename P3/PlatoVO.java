@@ -1,11 +1,8 @@
-import java.util.Date;
 /**
  * Fichero: PlatoVO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
-
-public enum TipoPlato {Entrante, Principal, Postre, Bebida}
 
 public class PlatoVO {
     private int idPlato;

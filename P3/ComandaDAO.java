@@ -1,7 +1,5 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Fichero: ComandaDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
@@ -20,7 +18,7 @@ public class ComandaDAO {
         comandas.add(c);
     }
     public void eliminarComanda(ComandaVO c){
-        comandas.remove(c.obtenerIdComanda);
+        comandas.remove(c.obtenerIdComanda());
     }
     public ComandaVO obtenerComanda(int idComanda){
         return(comandas.get(idComanda));
