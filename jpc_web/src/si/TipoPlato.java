@@ -1,5 +1,5 @@
 /**
- * Fichero: PlatoVO.java
+ * Fichero: TipoPlato.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
