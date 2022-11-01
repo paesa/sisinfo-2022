@@ -1,0 +1,114 @@
+-- DROP SCHEMA sisinf2022;
+
+CREATE SCHEMA sisinf2022 AUTHORIZATION postgres;
+
+CREATE TYPE estado_comanda as ENUM('creada', 'preparando', 'recoger', 'entregado');
+
+DROP TABLE IF EXISTS comanda CASCADE;
+
+CREATE TABLE comanda (
+	idcomanda SERIAL PRIMARY KEY,
+	fecha date NOT NULL,
+	comentario varchar(200) NOT NULL,
+	estado estado_comanda NOT NULL DEFAULT 'creada'::estado_comanda
+);
+
+CREATE TYPE tipo_cuenta as ENUM('cliente', 'cocinero', 'sala', 'admin');
+
+DROP TABLE IF EXISTS cuenta CASCADE;
+
+CREATE TABLE cuenta (
+	idcuenta SERIAL PRIMARY KEY,
+	correo varchar(50) NOT NULL,
+	apodo varchar(50) NOT NULL,
+	contrasena varchar(50) NOT NULL,
+	tipo tipo_cuenta NOT NULL DEFAULT 'cliente'::tipo_cuenta,
+	CONSTRAINT cuenta_check_correo CHECK (correo LIKE '%@%.%'),
+	CONSTRAINT cuenta_check_apodo CHECK (LENGTH(apodo)>0),
+	CONSTRAINT cuenta_check_contrasena CHECK ((LENGTH(contrasena)>=8) AND (contrasena SIMILAR TO '%[0-9]%') AND (contrasena SIMILAR TO '%[A-Z]%'))
+);
+
+CREATE TYPE tipo_plato as ENUM('entrante', 'principal', 'postre', 'bebida');
+
+DROP TABLE IF EXISTS plato CASCADE;
+
+CREATE TABLE plato (
+	idplato SERIAL PRIMARY KEY,
+	nombre varchar(50) NOT NULL,
+	precio float8 NOT NULL,
+	descripcion varchar(200) NOT NULL,
+	tipo tipo_plato NOT NULL DEFAULT 'entrante'::tipo_plato,
+	vegano bool NOT NULL,
+	singluten bool NOT NULL,
+	sinlactosa bool NOT NULL,
+	CONSTRAINT plato_check_precio CHECK ((precio >= (0.0)::double precision)),
+	CONSTRAINT plato_check_nombre CHECK (LENGTH(nombre)>0),
+	CONSTRAINT plato_check_descripcion CHECK (LENGTH(descripcion)>0)
+);
+
+DROP TABLE IF EXISTS comandaCreadaPor;
+
+CREATE TABLE comandaCreadaPor (
+	comanda integer NOT NULL,
+	cuenta integer NOT NULL,
+	CONSTRAINT comandaCreadaPor_pk PRIMARY KEY (comanda),
+	CONSTRAINT comandaCreadaPor_fk_com FOREIGN KEY (comanda) REFERENCES comanda(idcomanda) ON DELETE CASCADE,
+	CONSTRAINT comandaCreadaPor_fk_cuenta FOREIGN KEY (cuenta) REFERENCES cuenta(idcuenta) ON DELETE SET null
+);
+
+CREATE OR REPLACE FUNCTION deleteComanda() RETURNS trigger AS
+$$
+BEGIN
+	DELETE FROM comandaCreadaPor WHERE (SELECT c.tipo FROM cuenta c WHERE c.idcuenta = cuenta) = 'cliente'::tipo_cuenta;
+	RETURN NULL;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_deleteComanda AFTER INSERT ON cuenta EXECUTE PROCEDURE deleteComanda();
+
+
+DROP TABLE IF EXISTS comandaTienePlato;
+
+CREATE TABLE comandaTienePlato (
+	comanda integer NOT NULL,
+	plato integer NOT NULL,
+	numPlatos integer NOT NULL DEFAULT 1,
+	CONSTRAINT comandaTienePlato_pk PRIMARY KEY (comanda, plato),
+	CONSTRAINT comandaTienePlato_fk_com FOREIGN KEY (comanda) REFERENCES comanda(idcomanda) ON DELETE CASCADE,
+	CONSTRAINT comandaTienePlato_fk_plato FOREIGN KEY (plato) REFERENCES plato(idplato) ON DELETE CASCADE,
+	CONSTRAINT comandaTienePlato_check_numplatos CHECK (numPlatos >=0)
+);
+
+
+CREATE OR REPLACE FUNCTION deletePlatos() RETURNS trigger AS
+$$
+BEGIN
+	DELETE FROM comandaTienePlato WHERE numPlatos == 0;
+	RETURN NULL;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_deletePlatos AFTER UPDATE ON comandaTienePlato EXECUTE PROCEDURE deletePlatos();
+
+INSERT INTO cuenta VALUES (1, 'admin@gmail.com', 'admin', 'Administrador1', 'admin');
+INSERT INTO cuenta VALUES (2, 'cliente@gmail.com', 'cliente', 'Clientes1', 'cliente');
+INSERT INTO cuenta VALUES (3, 'cocinero@gmail.com', 'cocinero', 'Cocinero1', 'cocinero');
+INSERT INTO cuenta VALUES (4, 'jefesala@gmail.com', 'jefesala', 'Jefesala1', 'sala');
+
+INSERT INTO plato VALUES (1, 'Ensalada fresca', 4.0, 'Bien aliñada', 'entrante', true, false, true);
+INSERT INTO plato VALUES (2, 'Chuletón', 20.0, 'Ternasco a la parrilla', 'principal', false, true, true);
+INSERT INTO plato VALUES (3, 'Tarta de queso', 5.0, 'Con galleta casera', 'postre', false, false, false);
+INSERT INTO plato VALUES (4, 'Agua mineral', 1.5, 'Manantial del Pirineo', 'bebida', true, true, true);
+
+INSERT INTO comanda VALUES (1, DATE('2022-10-18'), 'Sin prisa', DEFAULT);
+
+INSERT INTO comandaCreadaPor VALUES (1,2);
+
+INSERT INTO comandaTienePlato VALUES (1,1,1);
+INSERT INTO comandaTienePlato VALUES (1,2,1);
+INSERT INTO comandaTienePlato VALUES (1,3,3);
+INSERT INTO comandaTienePlato VALUES (1,4,2);
+
+
