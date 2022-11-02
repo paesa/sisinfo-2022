@@ -1,29 +1,28 @@
-import java.util.ArrayList;
-import java.util.List;
+package src.si.dao;
+
+import java.sql.Connection;
+
+import src.si.vo.CuentaVO;
+import src.util.exception.InternalErrorException;
 /**
  * Fichero: CuentaDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
 
+public interface CuentaDAO {
+    public boolean existe(Connection connection, String correo) 
+		throws InternalErrorException;
 
-public class CuentaDAO {
-    List<CuentaVO> cuentas;
-    
-    //Constructor
-    public CuentaDAO(){
-        cuentas=new ArrayList<CuentaVO>();
-    }
-    public void anyadirCuenta(CuentaVO c){
-        cuentas.add(c);
-    }
-    public void eliminarCuenta(CuentaVO c){
-        cuentas.remove(c.obtenerIdCuenta());
-    }
-    public CuentaVO obtenerCuenta(int idCuenta){
-        return(cuentas.get(idCuenta));
-    }
-    public List<CuentaVO> obtenerCuentas(){
-        return(cuentas);
-    }
+    public void crea(Connection connection, CuentaVO cuentaVO) 
+		throws InternalErrorException;
+
+    public CuentaVO encuentra(Connection connection, String correo) 
+	    throws InternalErrorException;
+
+    public void actualiza(Connection connection, CuentaVO user) 
+		    throws InternalErrorException;
+
+	public void elimina(Connection connection, String correo)
+	    throws InternalErrorException; 
 }
