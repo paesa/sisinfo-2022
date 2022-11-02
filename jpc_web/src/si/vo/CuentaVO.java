@@ -12,11 +12,20 @@ public class CuentaVO {
     private TipoCuenta tipoCuenta;
     
     //Constructor
-    public CuentaVO(int idCuenta, String correo, String apodo, String contrasegna) {
+    public CuentaVO(int idCuenta, String correo, String apodo, String contrasegna, String tipoCuenta) {
         this.idCuenta = idCuenta;
         this.correo = correo;
         this.apodo = apodo;
         this.contrasegna = contrasegna;
+        this.tipoCuenta = TipoCuenta(tipoCuenta);
+    }
+
+    //Constructor
+    public CuentaVO(String correo, String apodo, String contrasegna, String tipoCuenta) {
+        this.correo = correo;
+        this.apodo = apodo;
+        this.contrasegna = contrasegna;
+        this.tipoCuenta = TipoCuenta(tipoCuenta);
     }
     
     public int obtenerIdCuenta() {
