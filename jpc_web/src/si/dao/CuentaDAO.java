@@ -24,5 +24,8 @@ public interface CuentaDAO {
 		    throws InternalErrorException;
 
 	public void elimina(Connection connection, String correo)
-	    throws InternalErrorException; 
+	    throws InternalErrorException;
+
+	public Collection <CuentaVO> muestraTodos(Connection connection)
+	    throws InternalErrorException;
 }

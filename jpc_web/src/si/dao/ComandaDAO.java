@@ -1,29 +1,30 @@
-import java.util.ArrayList;
-import java.util.List;
+package src.si.dao;
+
+import java.sql.Connection;
+import java.util.Collection;
+
+import src.si.vo.ComandaVO;
+import src.util.exception.InternalErrorException;
 /**
  * Fichero: ComandaDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
 
+public interface ComandaDAO {
 
-public class ComandaDAO {
-    List<ComandaVO> comandas;
-    
-    //Constructor
-    public ComandaDAO(){
-        comandas=new ArrayList<ComandaVO>();
-    }
-    public void anyadirComanda(ComandaVO c){
-        comandas.add(c);
-    }
-    public void eliminarComanda(ComandaVO c){
-        comandas.remove(c.obtenerIdComanda());
-    }
-    public ComandaVO obtenerComanda(int idComanda){
-        return(comandas.get(idComanda));
-    }
-    public List<ComandaVO> obtenerComandas(){
-        return(comandas);
-    }
+    public void crea(Connection connection, ComandaVO comandaVO) 
+		throws InternalErrorException;
+
+    public void actualiza(Connection connection, ComandaVO comandaVO) 
+		    throws InternalErrorException;
+
+	public void elimina(Connection connection, int idcomanda)
+	    throws InternalErrorException; 
+
+	public Collection <ComandaVO> muestraTodos(Connection connection)
+	    throws InternalErrorException;
+	
+	public Collection <ComandaVO> muestraPorEstado(Connection connection, String estado)
+	    throws InternalErrorException;
 }

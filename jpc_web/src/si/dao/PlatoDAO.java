@@ -1,30 +1,30 @@
-import java.util.ArrayList;
-import java.util.List;
+package src.si.dao;
 
+import java.sql.Connection;
+import java.util.Collection;
+
+import src.si.vo.PlatoVO;
+import src.util.exception.InternalErrorException;
 /**
  * Fichero: PlatoDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
 
+public interface PlatoDAO {
 
-public class PlatoDAO {
-    List<PlatoVO> platos;
-    
-    //Constructor
-    public PlatoDAO(){
-        platos=new ArrayList<PlatoVO>();
-    }
-    public void anyadirPlato(PlatoVO p){
-        platos.add(p);
-    }
-    public void eliminarPlato(PlatoVO p){
-        platos.remove(p.obtenerIdPlato());
-    }
-    public PlatoVO obtenerPlato(int idPlato){
-        return(platos.get(idPlato));
-    }
-    public List<PlatoVO> obtenerPlatos(){
-        return(platos);
-    }
+    public void crea(Connection connection, PlatoVO platoVO) 
+		throws InternalErrorException;
+
+    public void actualiza(Connection connection, PlatoVO platoVO) 
+		    throws InternalErrorException;
+
+	public void elimina(Connection connection, int idplato)
+	    throws InternalErrorException; 
+
+	public Collection <PlatoVO> muestraTodos(Connection connection)
+	    throws InternalErrorException;
+	
+	public Collection <PlatoVO> muestraPorTipo(Connection connection, String tipo)
+	    throws InternalErrorException;
 }
