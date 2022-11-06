@@ -1,6 +1,9 @@
+package src.si.vo;
+
 import java.util.Date;
+import src.si.Estado;
 /**
- * Fichero: comandaVO.java
+ * Fichero: ComandaVO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
  *
  */
@@ -12,12 +15,19 @@ public class ComandaVO {
     private Estado estado;
     
     //Constructor
-    public ComandaVO(int idComanda, Date fecha, String comentario, Estado estado) {
+    public ComandaVO(int idComanda, Date fecha, String comentario, String estado) {
         this.idComanda = idComanda;
         this.fecha = fecha;
         this.comentario = comentario;
-        this.estado = estado;
+        this.estado = Estado.valueOf(estado);
     }
+    //Constructor
+    public ComandaVO(Date fecha, String comentario, String estado) {
+        this.fecha = fecha;
+        this.comentario = comentario;
+        this.estado = Estado.valueOf(estado);
+    }
+
     public int obtenerIdComanda() {
         return idComanda;
     }
@@ -39,7 +49,7 @@ public class ComandaVO {
     public Estado obtenerEstado() {
         return estado;
     }
-    public void establecerEstado(Estado estado) {
-        this.estado = estado;
+    public void establecerEstado(String estado) {
+        this.estado = Estado.valueOf(estado);
     }
 }

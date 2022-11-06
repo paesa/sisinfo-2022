@@ -1,3 +1,6 @@
+package src.si.vo;
+
+import src.si.TipoPlato;
 /**
  * Fichero: PlatoVO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
@@ -15,12 +18,23 @@ public class PlatoVO {
     private boolean sinLactosa;
 
     //Constructor
-    public PlatoVO(int idPlato, String nombre, float precio, String descripcion, TipoPlato tipoPlato, boolean vegano, boolean sinGluten, boolean sinLactosa) {
+    public PlatoVO(int idPlato, String nombre, float precio, String descripcion, String tipoPlato, boolean vegano, boolean sinGluten, boolean sinLactosa) {
         this.idPlato = idPlato;
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
-        this.tipoPlato = tipoPlato;
+        this.tipoPlato = TipoPlato.valueOf(tipoPlato);
+        this.vegano = vegano;
+        this.sinGluten = sinGluten;
+        this.sinLactosa = sinLactosa;
+    }
+
+    //Constructor
+    public PlatoVO(String nombre, float precio, String descripcion, String tipoPlato, boolean vegano, boolean sinGluten, boolean sinLactosa) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.descripcion = descripcion;
+        this.tipoPlato = TipoPlato.valueOf(tipoPlato);
         this.vegano = vegano;
         this.sinGluten = sinGluten;
         this.sinLactosa = sinLactosa;
@@ -53,8 +67,8 @@ public class PlatoVO {
      public TipoPlato obtenerTipoPlato() {
         return tipoPlato;
     }
-    public void establecerTipoPlato(TipoPlato tipoPlato) {
-        this.tipoPlato = tipoPlato;
+    public void establecerTipoPlato(String tipoPlato) {
+        this.tipoPlato = TipoPlato.valueOf(tipoPlato);
     }
     public void establecerVegano(boolean vegano) {
         this.vegano = vegano;

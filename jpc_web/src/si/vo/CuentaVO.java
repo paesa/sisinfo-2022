@@ -1,3 +1,6 @@
+package src.si.vo;
+
+import src.si.TipoCuenta;
 /**
  * Fichero: CuentaVO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
@@ -17,7 +20,7 @@ public class CuentaVO {
         this.correo = correo;
         this.apodo = apodo;
         this.contrasegna = contrasegna;
-        this.tipoCuenta = TipoCuenta(tipoCuenta);
+        this.tipoCuenta = TipoCuenta.valueOf(tipoCuenta);
     }
 
     //Constructor
@@ -25,7 +28,7 @@ public class CuentaVO {
         this.correo = correo;
         this.apodo = apodo;
         this.contrasegna = contrasegna;
-        this.tipoCuenta = TipoCuenta(tipoCuenta);
+        this.tipoCuenta = TipoCuenta.valueOf(tipoCuenta);
     }
     
     public int obtenerIdCuenta() {
@@ -55,7 +58,7 @@ public class CuentaVO {
     public TipoCuenta obtenerTipoCuenta() {
         return tipoCuenta;
     }
-    public void establecerTipoCuenta(TipoCuenta tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
+    public void establecerTipoCuenta(String tipoCuenta) {
+        this.tipoCuenta = TipoCuenta.valueOf(tipoCuenta);
     }
 }
