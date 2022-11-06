@@ -30,6 +30,14 @@ public class CuentaVO {
         this.contrasegna = contrasegna;
         this.tipoCuenta = TipoCuenta.valueOf(tipoCuenta);
     }
+
+    //Constructor
+    public CuentaVO(String correo, String apodo, String contrasegna) {
+        this.correo = correo;
+        this.apodo = apodo;
+        this.contrasegna = contrasegna;
+        this.tipoCuenta = TipoCuenta.CLIENTE;
+    }
     
     public int obtenerIdCuenta() {
         return idCuenta;

@@ -1,3 +1,5 @@
+package src.si;
+
 /**
  * Fichero: Estado.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
