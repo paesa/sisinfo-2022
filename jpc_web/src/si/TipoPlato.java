@@ -12,14 +12,15 @@ public enum TipoPlato {
     POSTRE("Postre"),
     BEBIDA("Bebida");
 
-    private String tipo;
+    private String plato;
 
-    TipoPlato(String t) {
-        this.tipo=t;
+    TipoPlato(String plato) {
+        this.plato=plato;
     }
-
-    public String getTipo() {
-        return tipo;
+    public String obtenerPlato() {
+        return plato;
     }
-
+    public void establecerPlato(String plato) {
+        this.plato=plato;
+    }
 }

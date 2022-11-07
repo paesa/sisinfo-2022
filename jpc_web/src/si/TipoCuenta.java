@@ -1,5 +1,6 @@
 package src.si;
 
+
 /**
  * Fichero: TipoCuenta.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
@@ -12,14 +13,15 @@ public enum TipoCuenta {
     SALA("Sala"),
     ADMIN("Admin");
 
-    private String tipo;
+    private String cuenta;
 
-    TipoCuenta(String t) {
-        this.tipo=t;
+    TipoCuenta(String cuenta) {
+        this.cuenta=cuenta;
     }
-
-    public String getTipo() {
-        return tipo;
+    public String obtenerCuenta() {
+        return cuenta;
     }
-
+    public void establecerCuenta(String cuenta){
+        this.cuenta=cuenta;
+    }
 }
