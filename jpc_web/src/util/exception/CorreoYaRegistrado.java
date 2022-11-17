@@ -1,3 +1,5 @@
+package src.util.exception;
+
 public class CorreoYaRegistrado extends Exception{
 	private String mess = "Error al crear cuenta: correo en uso\n";
 	public CorreoYaRegistrado() {

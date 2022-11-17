@@ -2,31 +2,30 @@ package src.si.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
-import src.si.dao.PlainSQLCuentaDAO;
+import src.si.dao.PlainCuentaDAO;
 import src.si.dao.CuentaDAO;
 import src.si.vo.CuentaVO;
-import src.util.exception.InternalErrorException;
-import srcc.util.exception.CorreoYaRegistrado;
-import srcc.util.exception.CorreoInvalido;
+import src.util.exception.ErrorInterno;
+import src.util.exception.CorreoYaRegistrado;
+import src.util.exception.CorreoInvalido;
 import src.util.db.SimpleDataSource;
 
 public class PlainModelFacade {
 	
 	private DataSource dataSource;
 
-	public PlainModelFacade() throws InternalErrorException {  
+	public PlainModelFacade() throws ErrorInterno {  
 		System.out.println ("He llegado a la creación de la fachada correctamente...");
 		this.dataSource = new SimpleDataSource();   
 		System.out.println ("Parece que soy capaz de crear la fachada correctamente...");
 	}
 	
-	public PlainModelFacade(String datasourceorigen) throws InternalErrorException { 
+	public PlainModelFacade(String datasourceorigen) throws ErrorInterno { 
 		try {
 			Context initialContext = new InitialContext();
 			Context envContext = (Context) initialContext.lookup("java:comp/env");
@@ -38,11 +37,11 @@ public class PlainModelFacade {
 
 		}catch (Exception e) {
 			e.printStackTrace();
-			throw new InternalErrorException(e);
+			throw new ErrorInterno(e);
 		}		
 	}
 	
-	public void registrarCuenta(CuentaVO cuentaVO) throws InternalErrorException, CorreoYaRegistrado{
+	public void registrarCuenta(CuentaVO cuentaVO) throws ErrorInterno, CorreoYaRegistrado{
 		CuentaDAO cuentaDAO = (CuentaDAO) new PlainCuentaDAO();
 		Connection connection =null;
 		try {
@@ -57,19 +56,19 @@ public class PlainModelFacade {
 		}
 				
 		}catch (SQLException e) {
-			throw new InternalErrorException(e);
+			throw new ErrorInterno(e);
 		}finally {
 			try {
 				if (connection !=null) {
 					connection.close();
 				}
 			} catch (SQLException e) {
-				throw new InternalErrorException(e);
+				throw new ErrorInterno(e);
 			}
 		}
 	}
 	
-	public void cambiarPerfil(CuentaVO cuentaVO) throws InternalErrorException, CorreoInvalido{
+	public void cambiarPerfil(CuentaVO cuentaVO) throws ErrorInterno, CorreoInvalido{
 		CuentaDAO cuentaDAO = (CuentaDAO) new PlainCuentaDAO();
 		Connection connection =null;
 		try {
@@ -81,24 +80,24 @@ public class PlainModelFacade {
 				throw new CorreoInvalido();				
 			}
 		}catch (SQLException e) {
-			throw new InternalErrorException(e);
+			throw new ErrorInterno(e);
 		}finally {
 			try {
 				if (connection !=null) {
 					connection.close();
 				}
 			} catch (SQLException e) {
-				throw new InternalErrorException(e);
+				throw new ErrorInterno(e);
 			}
 		}	
 	}
 	
-	public void cambiarClave(CuentaVO cuentaVO) throws InternalErrorException, CorreoInvalido{
+	public void cambiarClave(CuentaVO cuentaVO) throws ErrorInterno, CorreoInvalido{
 		cambiarPerfil(cuentaVO);
 	}
 	
 	public Collection <CuentaVO> encontrarUsuarios() 
-		throws InternalErrorException{
+		throws ErrorInterno{
 		Collection <CuentaVO> result = null;
 		CuentaDAO cuentaDAO = (CuentaDAO) new PlainCuentaDAO();
 		Connection connection =null;
@@ -106,37 +105,40 @@ public class PlainModelFacade {
 			connection = this.dataSource.getConnection();
 			result = cuentaDAO.muestraTodos(connection);
 		}catch (SQLException e) {
-			throw new InternalErrorException(e);
+			throw new ErrorInterno(e);
 		}finally {
 			try {
 				if (connection !=null) {
 					connection.close();
 				}
 			} catch (SQLException e) {
-				throw new InternalErrorException(e);
+				throw new ErrorInterno(e);
 			}
 		}
 		return result;
 		
 	}
 	
-	public void darBajaUsuario(String correo) throws InternalErrorException{
+	public void darBajaUsuario(String correo) throws ErrorInterno,CorreoInvalido{
 		CuentaDAO cuentaDAO = (CuentaDAO) new PlainCuentaDAO();
 		Connection connection =null;
 		try {
 			connection = this.dataSource.getConnection();
 			if (cuentaDAO.existe(connection, correo)) {
 				cuentaDAO.elimina(connection, correo);
+			}else {
+				System.out.println("No es usuario del sistema");
+				throw new CorreoInvalido();				
 			}
 		}catch (SQLException e) {
-			throw new InternalErrorException(e);
+			throw new ErrorInterno(e);
 		}finally {
 			try {
 				if (connection !=null) {
 					connection.close();
 				}
 			} catch (SQLException e) {
-				throw new InternalErrorException(e);
+				throw new ErrorInterno(e);
 			}
 		}	
 	}

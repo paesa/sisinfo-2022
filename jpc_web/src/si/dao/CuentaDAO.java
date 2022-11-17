@@ -1,9 +1,10 @@
 package src.si.dao;
 
 import java.sql.Connection;
+import java.util.Collection;
 
 import src.si.vo.CuentaVO;
-import src.util.exception.InternalErrorException;
+import src.util.exception.ErrorInterno;
 /**
  * Fichero: CuentaDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
@@ -12,20 +13,20 @@ import src.util.exception.InternalErrorException;
 
 public interface CuentaDAO {
     public boolean existe(Connection connection, String correo) 
-		throws InternalErrorException;
+		throws ErrorInterno;
 
     public void crea(Connection connection, CuentaVO cuentaVO) 
-		throws InternalErrorException;
+		throws ErrorInterno;
 
     public CuentaVO encuentra(Connection connection, String correo) 
-	    throws InternalErrorException;
+	    throws ErrorInterno;
 
     public void actualiza(Connection connection, CuentaVO user) 
-		    throws InternalErrorException;
+		    throws ErrorInterno;
 
 	public void elimina(Connection connection, String correo)
-	    throws InternalErrorException;
+	    throws ErrorInterno;
 
 	public Collection <CuentaVO> muestraTodos(Connection connection)
-	    throws InternalErrorException;
+	    throws ErrorInterno;
 }

@@ -6,54 +6,33 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.ArrayList;
-
-import src.util.exception.InternalErrorException;
 import src.si.vo.ComandaVO;
+import src.util.exception.ErrorInterno;
 
 
 /**
  * A  implementation of <code>comandaDAO</code> that leaves
  * <code>create(Connection, AccountVO)</code> as abstract.
  */
-public class PlainComandaDAO implements ComandaDAO{
-	public int idMax; // Maximo idcuenta en la tabla cuenta
-    
+public class PlainComandaDAO implements ComandaDAO{    
 	// Contructor
-    public PlainComandaDAO() {
-		/* Create "preparedStatement". */
-		String queryString = "SELECT MAX(idcomanda) FROM comanda";
-		preparedStatement = connection.prepareStatement(queryString);
-		
-		/* Execute query. */
-		resultSet = preparedStatement.executeQuery();
-		
-		if (resultSet.next()) {
-			/* Get results. */
-			i = 1;
-			idMax = resultSet.getInt(i++);
-		} else {idMax = 0;}
-
-		preparedStatement.close();
-
-		resultSet.close();
-	}
+    public PlainComandaDAO() {}
 
 	public void crea(Connection connection, ComandaVO comandaVO) 
-		throws InternalErrorException{
+		throws ErrorInterno{
 	    
 		PreparedStatement preparedStatement = null;
 	    try {
 	        /* Create "preparedStatement". */
 	        String queryString = "INSERT INTO comanda" +
-	            " (idcomanda, fecha, comentario, estado) VALUES (?, ?, ?, ?)";
+	            " (fecha, comentario, estado) VALUES (?, ?, ?)";
 	        preparedStatement = connection.prepareStatement(queryString);    
 	            
 	        /* Fill "preparedStatement". */
 	        int i = 1;
-            preparedStatement.setInt(i++, idMax+1);
 	        preparedStatement.setDate(i++, comandaVO.obtenerFecha());
 	        preparedStatement.setString(i++, comandaVO.obtenerComentario());
-	        preparedStatement.setString(i++, (comandaVO.obtenerEstado()).getTipo());
+	        preparedStatement.setString(i++, (comandaVO.obtenerEstado()).obtenerTipo());
 	                        
 	        /* Execute query. */
 	        int insertedRows = preparedStatement.executeUpdate();
@@ -63,24 +42,24 @@ public class PlainComandaDAO implements ComandaDAO{
 	                    " 'comanda'");
 	        } else if (insertedRows > 1) {
 	           throw new SQLException("Duplicate row in table 'comanda'");
-	        } else {idMax++;} // Si se ha añadido correctamente, actualizar idMax
+	        }
 	        preparedStatement.close();
 
 	    } catch (SQLException e) {
 	    	System.out.println("Error.." + e);		        	
-	        throw new InternalErrorException(e);
+	        throw new ErrorInterno(e);
 	    } finally {
 	      	try {
 	        	preparedStatement.close();
 	        } catch (SQLException e) {
-	        	throw new InternalErrorException(e);
+	        	throw new ErrorInterno(e);
 	        }	        
 	    }	
 	}
 
 	            
     public void actualiza(Connection connection, ComandaVO comandaVO) 
-        throws InternalErrorException {
+        throws ErrorInterno {
         
         PreparedStatement preparedStatement = null;
 
@@ -95,14 +74,14 @@ public class PlainComandaDAO implements ComandaDAO{
             int i = 1;
             preparedStatement.setDate(i++, comandaVO.obtenerFecha());
 	        preparedStatement.setString(i++, comandaVO.obtenerComentario());
-	        preparedStatement.setString(i++, (comandaVO.obtenerEstado()).getTipo());
+	        preparedStatement.setString(i++, (comandaVO.obtenerEstado()).obtenerTipo());
             preparedStatement.setInt(i++, comandaVO.obtenerIdComanda());
 
             /* Execute query. */
             int updatedRows = preparedStatement.executeUpdate();
 
             if (updatedRows == 0) {
-                throw new InternalErrorException(new Exception());
+                throw new ErrorInterno(new Exception());
             }
 
             if (updatedRows > 1) {
@@ -114,22 +93,21 @@ public class PlainComandaDAO implements ComandaDAO{
 
         } catch (SQLException e) {
             System.out.println(e);
-            throw new InternalErrorException(e);    
+            throw new ErrorInterno(e);    
         } finally {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
-                throw new InternalErrorException(e);
+                throw new ErrorInterno(e);
             }
         }    
         
     }
         
     public void elimina(Connection connection, int idcomanda) 
-        throws InternalErrorException {
+        throws ErrorInterno {
         
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet;
         
         try {
             // ELIMINAR EL comanda
@@ -148,40 +126,22 @@ public class PlainComandaDAO implements ComandaDAO{
 
             if (removedRows == 0) {
                 throw new SQLException(String.valueOf(idcomanda) +"duplicated in database");
-            } else if (idcomanda == idMax) {
-                // SI SE HA ELIMINADO EL comanda DE ID MÁXIMO, ACTUALIZAR idMax
-                /* Create "preparedStatement". */
-                queryString = "SELECT MAX(idcomanda) FROM comanda";
-                preparedStatement = connection.prepareStatement(queryString);
-                
-                /* Execute query. */
-                resultSet = preparedStatement.executeQuery();
-                
-                if (resultSet.next()) {
-                    /* Get results. */
-                    i = 1;
-                    idMax = resultSet.getInt(i++);
-                } else {idMax = 0;}
-
-                preparedStatement.close();
-
-                resultSet.close();
             }
             
         } catch (SQLException e) {
-            throw new InternalErrorException(e);    
+            throw new ErrorInterno(e);    
         } finally {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
-                throw new InternalErrorException(e);
+                throw new ErrorInterno(e);
             }
         }
                         
     }
 
     public Collection <ComandaVO> muestraTodos(Connection connection)
-        throws InternalErrorException {
+        throws ErrorInterno {
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
             
@@ -207,7 +167,7 @@ public class PlainComandaDAO implements ComandaDAO{
                     ComandaVO comandaVO = new ComandaVO(resultSet.getInt(i++), resultSet.getDate(i++), 
                             resultSet.getString(i++), resultSet.getString(i++));
                         
-                    cuentaList.add(comandaVO);
+                    comandaList.add(comandaVO);
 
                 } while (resultSet.next()) ;
                 
@@ -218,19 +178,19 @@ public class PlainComandaDAO implements ComandaDAO{
             return comandaList;
             
         } catch (SQLException e) {
-            throw new InternalErrorException(e);    
+            throw new ErrorInterno(e);    
         } finally {
             try {
                 if (resultSet!=null) resultSet.close();
                 if (preparedStatement!=null) preparedStatement.close();
             } catch (SQLException e) {
-                throw new InternalErrorException(e);
+                throw new ErrorInterno(e);
             }
         }
     }
 
     public Collection <ComandaVO> muestraPorEstado(Connection connection, String estado)
-        throws InternalErrorException {
+        throws ErrorInterno {
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
             
@@ -259,7 +219,7 @@ public class PlainComandaDAO implements ComandaDAO{
                     ComandaVO comandaVO = new ComandaVO(resultSet.getInt(i++), resultSet.getDate(i++), 
                             resultSet.getString(i++), resultSet.getString(i++));
                         
-                    cuentaList.add(comandaVO);
+                    comandaList.add(comandaVO);
 
                 } while (resultSet.next()) ;
                 
@@ -270,13 +230,13 @@ public class PlainComandaDAO implements ComandaDAO{
             return comandaList;
             
         } catch (SQLException e) {
-            throw new InternalErrorException(e);    
+            throw new ErrorInterno(e);    
         } finally {
             try {
                 if (resultSet!=null) resultSet.close();
                 if (preparedStatement!=null) preparedStatement.close();
             } catch (SQLException e) {
-                throw new InternalErrorException(e);
+                throw new ErrorInterno(e);
             }
         }
     }

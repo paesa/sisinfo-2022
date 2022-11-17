@@ -6,9 +6,8 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.ArrayList;
-
-import src.util.exception.InternalErrorException;
 import src.si.vo.CuentaVO;
+import src.util.exception.ErrorInterno;
 
 
 /**
@@ -16,45 +15,26 @@ import src.si.vo.CuentaVO;
  * <code>create(Connection, AccountVO)</code> as abstract.
  */
 public class PlainCuentaDAO implements CuentaDAO{
-	public int idMax; // Maximo idcuenta en la tabla cuenta
-    
+  
 	// Contructor
-    public PlainCuentaDAO() {
-		/* Create "preparedStatement". */
-		String queryString = "SELECT MAX(idcuenta) FROM cuenta";
-		preparedStatement = connection.prepareStatement(queryString);
-		
-		/* Execute query. */
-		resultSet = preparedStatement.executeQuery();
-		
-		if (resultSet.next()) {
-			/* Get results. */
-			i = 1;
-			idMax = resultSet.getInt(i++);
-		} else {idMax = 0;}
-
-		preparedStatement.close();
-
-		resultSet.close();
-	}
+    public PlainCuentaDAO() {}
 
 	public void crea(Connection connection, CuentaVO cuentaVO) 
-		throws InternalErrorException{
+		throws ErrorInterno{
 	    
 		PreparedStatement preparedStatement = null;
 	    try {
 	        /* Create "preparedStatement". */
 	        String queryString = "INSERT INTO cuenta" +
-	            " (idcuenta, correo, apodo, contrasena, tipo) VALUES (?, ?, ?, ? ,?)";
+	            " (correo, apodo, contrasena, tipo) VALUES (?, ?, ?, ?)";
 	        preparedStatement = connection.prepareStatement(queryString);    
 	            
 	        /* Fill "preparedStatement". */
 	        int i = 1;
-            preparedStatement.setInt(i++, idMax+1);
 	        preparedStatement.setString(i++, cuentaVO.obtenerCorreo());
 	        preparedStatement.setString(i++, cuentaVO.obtenerApodo());
 	        preparedStatement.setString(i++, cuentaVO.obtenerContrasegna());
-	        preparedStatement.setString(i++, (cuentaVO.obtenerTipoCuenta()).getTipo());
+	        preparedStatement.setString(i++, (cuentaVO.obtenerTipoCuenta()).obtenerTipo());
 	                        
 	        /* Execute query. */
 	        int insertedRows = preparedStatement.executeUpdate();
@@ -64,23 +44,23 @@ public class PlainCuentaDAO implements CuentaDAO{
 	                    " 'cuenta'");
 	        } else if (insertedRows > 1) {
 	           throw new SQLException("Duplicate row in table 'cuenta'");
-	        } else {idMax++;} // Si se ha añadido correctamente, actualizar idMax
+	        } 
 	        preparedStatement.close();
 
 	    } catch (SQLException e) {
 	    	System.out.println("Error.." + e);		        	
-	        throw new InternalErrorException(e);
+	        throw new ErrorInterno(e);
 	    } finally {
 	      	try {
 	        	preparedStatement.close();
 	        } catch (SQLException e) {
-	        	throw new InternalErrorException(e);
+	        	throw new ErrorInterno(e);
 	        }	        
 	    }	
 	}
 
 	public boolean existe(Connection connection, String correo) 
-		throws InternalErrorException {
+		throws ErrorInterno {
 	        
 	        PreparedStatement preparedStatement = null;
 	        ResultSet resultSet = null;
@@ -104,20 +84,20 @@ public class PlainCuentaDAO implements CuentaDAO{
 	            return result;
 	            
 	        } catch (SQLException e) {
-	            throw new InternalErrorException(e);    
+	            throw new ErrorInterno(e);    
 	        } finally {
 	        	try {
 	        		resultSet.close();
 	        		preparedStatement.close();
 	        	} catch (SQLException e) {
-	        		throw new InternalErrorException(e);
+	        		throw new ErrorInterno(e);
 	        	}
 	        }
 	        
 		}
 		
 		public CuentaVO encuentra(Connection connection, String correo)
-			throws InternalErrorException {
+			throws ErrorInterno {
 			
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
@@ -148,20 +128,20 @@ public class PlainCuentaDAO implements CuentaDAO{
 				return cuentaVO;
 				
 			} catch (SQLException e) {
-				throw new InternalErrorException(e);    
+				throw new ErrorInterno(e);    
 			} finally {
 				try {
 					resultSet.close();
 					preparedStatement.close();
 				} catch (SQLException e) {
-					throw new InternalErrorException(e);
+					throw new ErrorInterno(e);
 				}
 			}    
 			
 		}
 				
 		public void actualiza(Connection connection, CuentaVO cuentaVO) 
-			throws InternalErrorException {
+			throws ErrorInterno {
 			
 			PreparedStatement preparedStatement = null;
 
@@ -176,14 +156,14 @@ public class PlainCuentaDAO implements CuentaDAO{
 				int i = 1;
 				preparedStatement.setString(i++, cuentaVO.obtenerApodo());
 				preparedStatement.setString(i++, cuentaVO.obtenerContrasegna());
-				preparedStatement.setString(i++, (cuentaVO.obtenerTipoCuenta()).getTipo());
+				preparedStatement.setString(i++, (cuentaVO.obtenerTipoCuenta()).obtenerTipo());
 				preparedStatement.setString(i++, cuentaVO.obtenerCorreo());
 
 				/* Execute query. */
 				int updatedRows = preparedStatement.executeUpdate();
 
 				if (updatedRows == 0) {
-					throw new InternalErrorException(new Exception());
+					throw new ErrorInterno(new Exception());
 				}
 
 				if (updatedRows > 1) {
@@ -195,55 +175,30 @@ public class PlainCuentaDAO implements CuentaDAO{
 
 			} catch (SQLException e) {
 				System.out.println(e);
-				throw new InternalErrorException(e);    
+				throw new ErrorInterno(e);    
 			} finally {
 				try {
 					preparedStatement.close();
 				} catch (SQLException e) {
-					throw new InternalErrorException(e);
+					throw new ErrorInterno(e);
 				}
 			}    
 			
 		}
 			
 		public void elimina(Connection connection, String correo) 
-			throws InternalErrorException {
+			throws ErrorInterno {
 			
 			PreparedStatement preparedStatement = null;
-			ResultSet resultSet;
-			int idcuenta = 0;
 			
 			try {
-				// OBTENER idcuenta DE LA CUENTA A ELIMINAR
+				// ELIMINAR LA CUENTA
 				/* Create "preparedStatement". */
-				String queryString = "SELECT idcuenta FROM cuenta WHERE" +
-					" correo = ?";
+				String queryString = "DELETE FROM cuenta WHERE correo = ?";
 				preparedStatement = connection.prepareStatement(queryString);
 				
 				/* Fill "preparedStatement". */
 				int i = 1;
-				preparedStatement.setString(i++, correo);
-				
-				/* Execute query. */
-				resultSet = preparedStatement.executeQuery();
-				
-				if (resultSet.next()) {
-					/* Get results. */
-					i = 1;
-					idcuenta = resultSet.getInt(i++);
-				}
-
-				preparedStatement.close();
-
-				resultSet.close();
-
-				// ELIMINAR LA CUENTA
-				/* Create "preparedStatement". */
-				queryString = "DELETE FROM cuenta WHERE correo = ?";
-				preparedStatement = connection.prepareStatement(queryString);
-				
-				/* Fill "preparedStatement". */
-				i = 1;
 				preparedStatement.setString(i++, correo);
 				
 				/* Execute query. */
@@ -253,40 +208,22 @@ public class PlainCuentaDAO implements CuentaDAO{
 
 				if (removedRows == 0) {
 					throw new SQLException(correo +"duplicated in database");
-				} else if (idcuenta == idMax) {
-					// SI SE HA ELIMINADO LA CUENTA DE ID MÁXIMO, ACTUALIZAR idMax
-					/* Create "preparedStatement". */
-					queryString = "SELECT MAX(idcuenta) FROM cuenta";
-					preparedStatement = connection.prepareStatement(queryString);
-					
-					/* Execute query. */
-					resultSet = preparedStatement.executeQuery();
-					
-					if (resultSet.next()) {
-						/* Get results. */
-						i = 1;
-						idMax = resultSet.getInt(i++);
-					} else {idMax = 0;}
-
-					preparedStatement.close();
-
-					resultSet.close();
 				}
 				
 			} catch (SQLException e) {
-				throw new InternalErrorException(e);    
+				throw new ErrorInterno(e);    
 			} finally {
 				try {
 					preparedStatement.close();
 				} catch (SQLException e) {
-					throw new InternalErrorException(e);
+					throw new ErrorInterno(e);
 				}
 			}
 							
 		}
 
 		public Collection <CuentaVO> muestraTodos(Connection connection)
-			throws InternalErrorException {
+			throws ErrorInterno {
 				PreparedStatement preparedStatement = null;
 				ResultSet resultSet = null;
 				
@@ -323,13 +260,13 @@ public class PlainCuentaDAO implements CuentaDAO{
 				return cuentaList;
 				
 			} catch (SQLException e) {
-				throw new InternalErrorException(e);    
+				throw new ErrorInterno(e);    
 			} finally {
 				try {
 					if (resultSet!=null) resultSet.close();
 					if (preparedStatement!=null) preparedStatement.close();
 				} catch (SQLException e) {
-					throw new InternalErrorException(e);
+					throw new ErrorInterno(e);
 				}
 			}
 		}

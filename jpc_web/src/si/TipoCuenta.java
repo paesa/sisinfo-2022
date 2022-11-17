@@ -18,10 +18,10 @@ public enum TipoCuenta {
     TipoCuenta(String cuenta) {
         this.cuenta=cuenta;
     }
-    public String obtenerCuenta() {
+    public String obtenerTipo() {
         return cuenta;
     }
-    public void establecerCuenta(String cuenta){
+    public void establecerTipo(String cuenta){
         this.cuenta=cuenta;
     }
 }

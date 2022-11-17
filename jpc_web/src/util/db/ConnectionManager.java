@@ -1,3 +1,5 @@
+package src.util.db;
+
 import java.sql.*;
 /** * Clase que abstrae la conexion con la base de datos. */
 public class ConnectionManager {

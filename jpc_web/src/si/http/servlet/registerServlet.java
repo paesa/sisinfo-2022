@@ -1,15 +1,20 @@
+package src.si.http.servlet;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import src.si.model.PlainModelFacade;
+import src.util.exception.ErrorInterno;
+import src.util.exception.CorreoYaRegistrado;
+import src.si.vo.CuentaVO;
 
 import java.util.HashMap; // import the HashMap class
 import java.util.*;
 
 public class RegisterServlet extends HttpServlet{
     public void doPost (HttpServletRequest request, HttpServletRespond response) throws
-        CorreoYaRegistrado, InternalErrorException{
+        CorreoYaRegistrado, ErrorInterno{
         Map<String, String> errors = new HashMap <String, String>();
 
         String apodo = request.getParameter("apodo");
@@ -17,16 +22,16 @@ public class RegisterServlet extends HttpServlet{
         String contrasegna = request.getParameter("contrasegna");
         String repContrasegna = request.getParameter("repContrasegna");
 
-        if ((apodo == null) || (apodo.trim().equals(""))) errors.add("apodo", "Campo obligatorio");
-        if ((correo == null) || (correo.trim().equals(""))) errors.add("correo", "Campo obligatorio");
+        if ((apodo == null) || (apodo.trim().equals(""))) errors.put("apodo", "Campo obligatorio");
+        if ((correo == null) || (correo.trim().equals(""))) errors.put("correo", "Campo obligatorio");
         int indiceArroba = correo.indexOf("@");
         int indicePunto = correo.indexOf(".");          
         if ((indiceArroba < 1) || (indicePunto == correo.length() - 1) || (indiceArroba < indicePunto)) {
-                errors.add("correo", "Formato de correo inválido");
+                errors.put("correo", "Formato de correo inválido");
         }
-        if ((contrasegna == null) || (contrasegna.trim().equals(""))) errors.add("contrasegna", "Campo obligatorio");
-        if ((repContrasegna == null) || (repContrasegna.trim().equals(""))) errors.add("repContrasegna", "Campo obligatorio");
-        if (repContrasegna != contrasegna) errors.add("repContrasegna", "Deben de coincidir ambas contraseñas");
+        if ((contrasegna == null) || (contrasegna.trim().equals(""))) errors.put("contrasegna", "Campo obligatorio");
+        if ((repContrasegna == null) || (repContrasegna.trim().equals(""))) errors.put("repContrasegna", "Campo obligatorio");
+        if (repContrasegna != contrasegna) errors.put("repContrasegna", "Deben de coincidir ambas contraseñas");
 
 
         if (!errors.isEmpty()){ //Forward a register.jsp con el mapa de errores /*Errores*/
@@ -34,7 +39,7 @@ public class RegisterServlet extends HttpServlet{
             RequestDispatcher dispatcher=request.getRequestDistpatcher("register.jsp");
             dispatcher.forwardTo(request, response);
         }else{//Procesamiento del proceso de autenticación /*Lógica negocio*/
-            CuentaVO cuentaVO = new CuentaVO(apodo, correo, contrasegna);
+            CuentaVO cuentaVO = new CuentaVO(correo, apodo, contrasegna);
             boolean error = false;
             try{
                 PlainModelFacade plainModelFacade = new PlainModelFacade();
@@ -53,4 +58,9 @@ public class RegisterServlet extends HttpServlet{
     		}
         }
     }
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws
+    CorreoYaRegistrado, ErrorInterno {
+		// TODO Auto-generated method stub
+		doPost(request, response);
+	}
 }

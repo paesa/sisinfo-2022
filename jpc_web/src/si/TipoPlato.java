@@ -17,10 +17,10 @@ public enum TipoPlato {
     TipoPlato(String plato) {
         this.plato=plato;
     }
-    public String obtenerPlato() {
+    public String obtenerTipo() {
         return plato;
     }
-    public void establecerPlato(String plato) {
+    public void establecerTipo(String plato) {
         this.plato=plato;
     }
 }

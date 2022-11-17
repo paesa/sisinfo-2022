@@ -6,9 +6,8 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.ArrayList;
-
-import src.util.exception.InternalErrorException;
 import src.si.vo.PlatoVO;
+import src.util.exception.ErrorInterno;
 
 
 /**
@@ -16,45 +15,26 @@ import src.si.vo.PlatoVO;
  * <code>create(Connection, AccountVO)</code> as abstract.
  */
 public class PlainPlatoDAO implements PlatoDAO{
-	public int idMax; // Maximo idcuenta en la tabla cuenta
-    
+   
 	// Contructor
-    public PlainPlatoDAO() {
-		/* Create "preparedStatement". */
-		String queryString = "SELECT MAX(idplato) FROM plato";
-		preparedStatement = connection.prepareStatement(queryString);
-		
-		/* Execute query. */
-		resultSet = preparedStatement.executeQuery();
-		
-		if (resultSet.next()) {
-			/* Get results. */
-			i = 1;
-			idMax = resultSet.getInt(i++);
-		} else {idMax = 0;}
-
-		preparedStatement.close();
-
-		resultSet.close();
-	}
+    public PlainPlatoDAO() {}
 
 	public void crea(Connection connection, PlatoVO platoVO) 
-		throws InternalErrorException{
+		throws ErrorInterno{
 	    
 		PreparedStatement preparedStatement = null;
 	    try {
 	        /* Create "preparedStatement". */
 	        String queryString = "INSERT INTO plato" +
-	            " (idplato, nombre, precio, descripcion, tipo, vegano, singluten, sinlactosa) VALUES (?, ?, ?, ? ,?, ?, ?, ?)";
+	            " (nombre, precio, descripcion, tipo, vegano, singluten, sinlactosa) VALUES (?, ?, ? ,?, ?, ?, ?)";
 	        preparedStatement = connection.prepareStatement(queryString);    
 	            
 	        /* Fill "preparedStatement". */
 	        int i = 1;
-            preparedStatement.setInt(i++, idMax+1);
 	        preparedStatement.setString(i++, platoVO.obtenerNombre());
 	        preparedStatement.setFloat(i++, platoVO.obtenerPrecio());
 	        preparedStatement.setString(i++, platoVO.obtenerDescripcion());
-	        preparedStatement.setString(i++, (platoVO.obtenerTipoPlato()).getTipo());
+	        preparedStatement.setString(i++, (platoVO.obtenerTipoPlato()).obtenerTipo());
             preparedStatement.setBoolean(i++, platoVO.esVegano());
 	        preparedStatement.setBoolean(i++, !platoVO.llevaGluten());
             preparedStatement.setBoolean(i++, !platoVO.llevaLactosa());
@@ -67,24 +47,24 @@ public class PlainPlatoDAO implements PlatoDAO{
 	                    " 'plato'");
 	        } else if (insertedRows > 1) {
 	           throw new SQLException("Duplicate row in table 'plato'");
-	        } else {idMax++;} // Si se ha añadido correctamente, actualizar idMax
-	        preparedStatement.close();
+	        }
+            preparedStatement.close();
 
 	    } catch (SQLException e) {
 	    	System.out.println("Error.." + e);		        	
-	        throw new InternalErrorException(e);
+	        throw new ErrorInterno(e);
 	    } finally {
 	      	try {
 	        	preparedStatement.close();
 	        } catch (SQLException e) {
-	        	throw new InternalErrorException(e);
+	        	throw new ErrorInterno(e);
 	        }	        
 	    }	
 	}
 
 	            
     public void actualiza(Connection connection, PlatoVO platoVO) 
-        throws InternalErrorException {
+        throws ErrorInterno {
         
         PreparedStatement preparedStatement = null;
 
@@ -100,7 +80,7 @@ public class PlainPlatoDAO implements PlatoDAO{
             preparedStatement.setString(i++, platoVO.obtenerNombre());
 	        preparedStatement.setFloat(i++, platoVO.obtenerPrecio());
 	        preparedStatement.setString(i++, platoVO.obtenerDescripcion());
-	        preparedStatement.setString(i++, (platoVO.obtenerTipoPlato()).getTipo());
+	        preparedStatement.setString(i++, (platoVO.obtenerTipoPlato()).obtenerTipo());
             preparedStatement.setBoolean(i++, platoVO.esVegano());
 	        preparedStatement.setBoolean(i++, !platoVO.llevaGluten());
             preparedStatement.setBoolean(i++, !platoVO.llevaLactosa());
@@ -110,7 +90,7 @@ public class PlainPlatoDAO implements PlatoDAO{
             int updatedRows = preparedStatement.executeUpdate();
 
             if (updatedRows == 0) {
-                throw new InternalErrorException(new Exception());
+                throw new ErrorInterno(new Exception());
             }
 
             if (updatedRows > 1) {
@@ -122,22 +102,21 @@ public class PlainPlatoDAO implements PlatoDAO{
 
         } catch (SQLException e) {
             System.out.println(e);
-            throw new InternalErrorException(e);    
+            throw new ErrorInterno(e);    
         } finally {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
-                throw new InternalErrorException(e);
+                throw new ErrorInterno(e);
             }
         }    
         
     }
         
     public void elimina(Connection connection, int idplato) 
-        throws InternalErrorException {
+        throws ErrorInterno {
         
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet;
         
         try {
             // ELIMINAR EL PLATO
@@ -156,40 +135,22 @@ public class PlainPlatoDAO implements PlatoDAO{
 
             if (removedRows == 0) {
                 throw new SQLException(String.valueOf(idplato) +"duplicated in database");
-            } else if (idplato == idMax) {
-                // SI SE HA ELIMINADO EL PLATO DE ID MÁXIMO, ACTUALIZAR idMax
-                /* Create "preparedStatement". */
-                queryString = "SELECT MAX(idplato) FROM plato";
-                preparedStatement = connection.prepareStatement(queryString);
-                
-                /* Execute query. */
-                resultSet = preparedStatement.executeQuery();
-                
-                if (resultSet.next()) {
-                    /* Get results. */
-                    i = 1;
-                    idMax = resultSet.getInt(i++);
-                } else {idMax = 0;}
-
-                preparedStatement.close();
-
-                resultSet.close();
             }
             
         } catch (SQLException e) {
-            throw new InternalErrorException(e);    
+            throw new ErrorInterno(e);    
         } finally {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
-                throw new InternalErrorException(e);
+                throw new ErrorInterno(e);
             }
         }
                         
     }
 
     public Collection <PlatoVO> muestraTodos(Connection connection)
-        throws InternalErrorException {
+        throws ErrorInterno {
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
             
@@ -216,7 +177,7 @@ public class PlainPlatoDAO implements PlatoDAO{
                             resultSet.getFloat(i++), resultSet.getString(i++), resultSet.getString(i++), 
                             resultSet.getBoolean(i++), resultSet.getBoolean(i++), resultSet.getBoolean(i++));
                         
-                    cuentaList.add(platoVO);
+                    platoList.add(platoVO);
 
                 } while (resultSet.next()) ;
                 
@@ -227,19 +188,19 @@ public class PlainPlatoDAO implements PlatoDAO{
             return platoList;
             
         } catch (SQLException e) {
-            throw new InternalErrorException(e);    
+            throw new ErrorInterno(e);    
         } finally {
             try {
                 if (resultSet!=null) resultSet.close();
                 if (preparedStatement!=null) preparedStatement.close();
             } catch (SQLException e) {
-                throw new InternalErrorException(e);
+                throw new ErrorInterno(e);
             }
         }
     }
 
     public Collection <PlatoVO> muestraPorTipo(Connection connection, String tipo)
-        throws InternalErrorException {
+        throws ErrorInterno {
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
             
@@ -269,7 +230,7 @@ public class PlainPlatoDAO implements PlatoDAO{
                             resultSet.getFloat(i++), resultSet.getString(i++), resultSet.getString(i++), 
                             resultSet.getBoolean(i++), resultSet.getBoolean(i++), resultSet.getBoolean(i++));
                         
-                    cuentaList.add(platoVO);
+                    platoList.add(platoVO);
 
                 } while (resultSet.next()) ;
                 
@@ -280,13 +241,13 @@ public class PlainPlatoDAO implements PlatoDAO{
             return platoList;
             
         } catch (SQLException e) {
-            throw new InternalErrorException(e);    
+            throw new ErrorInterno(e);    
         } finally {
             try {
                 if (resultSet!=null) resultSet.close();
                 if (preparedStatement!=null) preparedStatement.close();
             } catch (SQLException e) {
-                throw new InternalErrorException(e);
+                throw new ErrorInterno(e);
             }
         }
     }

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.Collection;
 
 import src.si.vo.ComandaVO;
-import src.util.exception.InternalErrorException;
+import src.util.exception.ErrorInterno;
 /**
  * Fichero: ComandaDAO.java
  * @author Pablo Jesús Bueno Ereza, Carlos Paesa Lía y Javier Cuesta Cocera
@@ -14,17 +14,17 @@ import src.util.exception.InternalErrorException;
 public interface ComandaDAO {
 
     public void crea(Connection connection, ComandaVO comandaVO) 
-		throws InternalErrorException;
+		throws ErrorInterno;
 
     public void actualiza(Connection connection, ComandaVO comandaVO) 
-		    throws InternalErrorException;
+		    throws ErrorInterno;
 
 	public void elimina(Connection connection, int idcomanda)
-	    throws InternalErrorException; 
+	    throws ErrorInterno; 
 
 	public Collection <ComandaVO> muestraTodos(Connection connection)
-	    throws InternalErrorException;
+	    throws ErrorInterno;
 	
 	public Collection <ComandaVO> muestraPorEstado(Connection connection, String estado)
-	    throws InternalErrorException;
+	    throws ErrorInterno;
 }

@@ -1,3 +1,5 @@
+package src.util.db;
+
 import java.sql.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;

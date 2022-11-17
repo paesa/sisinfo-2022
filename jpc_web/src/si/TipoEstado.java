@@ -18,10 +18,10 @@ public enum TipoEstado {
     TipoEstado(String estado){
         this.estado=estado;
     }
-    public void establecerEstado(String estado){
+    public void establecerTipo(String estado){
         this.estado=estado;
     }
-    public String obtenerEstado(){
+    public String obtenerTipo(){
         return estado;
     }
 }
